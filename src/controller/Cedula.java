@@ -4,7 +4,8 @@ public class Cedula {
 
     private final int valor;
     private int qtde;
-    private int qtdeImpressa;
+    private int qtdeImpressa; // informa quantas notas de cada valor foram impressas no último saque
+
 
     public Cedula(int valor) {
         this.valor = valor;
