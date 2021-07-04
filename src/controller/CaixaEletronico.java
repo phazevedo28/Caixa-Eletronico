@@ -17,7 +17,7 @@ public class CaixaEletronico {
     }
 
     public void abastecer(int valor, int qtde) {
-        if (((valor == 100 || valor == 50) || valor == 20) || valor == 10) {
+        if (valor == 100 || valor == 50 || valor == 20 || valor == 10) {
             switch (valor) {
                 case 100:
                     this.cem.setQtde(this.cem.getQtde() + qtde);
@@ -53,18 +53,22 @@ public class CaixaEletronico {
 
     }
 
-    private int extrairCedulas(int valorSaque, Cedula cedula) {
+    private int extrairCedulas(int valorSaque, Cedula cedula) {//atualiza os atributos da cedula e retorna o valor que ainda falta para completar o saque
         if (valorSaque >= cedula.getValor()) {
-            int qtnotas = valorSaque / cedula.getValor();
-            if (qtnotas <= cedula.getQtde()) {
-                valorSaque = valorSaque - cedula.getValor() * qtnotas;
-                cedula.setQtde(cedula.getQtde() - qtnotas);
-                cedula.setQtdeImpressa(qtnotas);
+            int qtdecedulas = valorSaque / cedula.getValor(); // determina a quantidade de cedulas que serao utilizadas no saque
+            if (qtdecedulas < cedula.getQtde()) {
+                valorSaque = valorSaque - cedula.getValor() * qtdecedulas;
+                cedula.setQtdeImpressa(qtdecedulas);
+                cedula.setQtde(cedula.getQtde() - qtdecedulas);  
+                System.out.println("voce ainda tem "+cedula.getQtde()+" cedulas de "+cedula.getValor());
+                 System.out.println("foram impressas "+cedula.getQtdeImpressa()+" cedulas de "+cedula.getValor());
 
             } else {
                 valorSaque = valorSaque - cedula.getQtde() * cedula.getValor();
-                cedula.setQtde(0);
                 cedula.setQtdeImpressa(cedula.getQtde());
+                cedula.setQtde(0);
+                 System.out.println("voce ainda tem "+cedula.getQtde()+" cedulas de "+cedula.getValor());
+                 System.out.println("foram impressas "+cedula.getQtdeImpressa()+" cedulas de "+cedula.getValor());
             }
         }
         return valorSaque;
@@ -72,7 +76,9 @@ public class CaixaEletronico {
 
     private boolean isSaqueValido(int valorSaque) { // verifica a validade do saque antes de ser processado
         int total = cem.getQtde() * cem.getValor() + cinquenta.getQtde() * cinquenta.getValor() + vinte.getQtde() * vinte.getValor() + dez.getQtde() * dez.getValor();
-        return (valorSaque % 10 == 0 || valorSaque <= total);
+        System.out.println("o Valor total disponivel no caixa eh: "+total);
+        System.out.println("o valor solicitado para saque eh: "+ valorSaque);
+        return (valorSaque % 10 == 0 && valorSaque <= total);
 
     }
 
@@ -85,17 +91,22 @@ public class CaixaEletronico {
 
     private void verificarSaque(int valorSobra) { // verifica se existem cedulas disponiveis para o valor do saque e informa o usuario
         if (valorSobra != 0) {
-            devolverCedulas();
+            reporCedulas();
             JOptionPane.showMessageDialog(null, "Não existem notas disponíveis o suficiente para o saque, tente outro valor");
         } else {
             JOptionPane.showMessageDialog(null, "Seu saque foi aprovado com " + cem.getQtdeImpressa() + " notas de cem, " + cinquenta.getQtdeImpressa() + " notas de cinquenta, " + vinte.getQtdeImpressa() + " notas de vinte, " + dez.getQtdeImpressa() + " notas de dez ");
         }
     }
 
-    private void devolverCedulas() { // se o valor para saque for aprovado
+    private void reporCedulas() { // se o valor para saque nao for aprovado, devolve as cedulas que foram retiradas
         this.cem.setQtde(this.cem.getQtdeImpressa() + this.cem.getQtde());
         this.cinquenta.setQtde(this.cinquenta.getQtdeImpressa() + this.cinquenta.getQtde());
         this.vinte.setQtde(this.vinte.getQtdeImpressa() + this.vinte.getQtde());
         this.dez.setQtde(this.dez.getQtdeImpressa() + this.dez.getQtde());
+        System.out.println("foram devolvidas: "+ cem.getQtdeImpressa()+"notas de "+ cem.getValor());
+        System.out.println("foram devolvidas: "+ cinquenta.getQtdeImpressa()+"notas de "+ cinquenta.getValor());
+        System.out.println("foram devolvidas: "+ vinte.getQtdeImpressa()+"notas de "+ vinte.getValor());
+        System.out.println("foram devolvidas: "+ dez.getQtdeImpressa()+"notas de "+ dez.getValor());
+          
     }
 }
