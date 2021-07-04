@@ -33,7 +33,7 @@ public class CaixaEletronico {
             }
             JOptionPane.showMessageDialog(null, "foram adicionadas " + qtde + " notas de " + valor + " reais ");
         } else {
-            JOptionPane.showMessageDialog(null, "Valor de nota invalido, insira um dos seguintes valores:100,50,20 ou 10");
+            JOptionPane.showMessageDialog(null, "Valor de nota inválido, insira um dos seguintes valores:100,50,20 ou 10");
         }
 
     }
@@ -48,7 +48,7 @@ public class CaixaEletronico {
             verificarSaque(valorSaque);
 
         } else {
-            JOptionPane.showMessageDialog(null, "O valor do saque e invalido,solicite outro valor");
+            JOptionPane.showMessageDialog(null, "O valor do saque é inválido,solicite outro valor");
         }
 
     }
@@ -59,15 +59,11 @@ public class CaixaEletronico {
             if (qtnotas <= cedula.getQtde()) {
                 valorSaque = valorSaque - cedula.getValor() * qtnotas;
                 cedula.setQtde(cedula.getQtde() - qtnotas);
-                System.out.println("ainda restam " + cedula.getQtde() + " notas de " + cedula.getValor());
-                System.out.println("ainda faltam " + valorSaque);
                 cedula.setQtdeImpressa(qtnotas);
 
             } else {
                 valorSaque = valorSaque - cedula.getQtde() * cedula.getValor();
                 cedula.setQtde(0);
-                System.out.println("ainda restam " + cedula.getQtde() + " notas de " + cedula.getValor());
-                System.out.println("ainda faltam " + valorSaque);
                 cedula.setQtdeImpressa(cedula.getQtde());
             }
         }
@@ -76,13 +72,11 @@ public class CaixaEletronico {
 
     private boolean isSaqueValido(int valorSaque) { // verifica a validade do saque antes de ser processado
         int total = cem.getQtde() * cem.getValor() + cinquenta.getQtde() * cinquenta.getValor() + vinte.getQtde() * vinte.getValor() + dez.getQtde() * dez.getValor();
-        System.out.println("valor total disponivel: " + total);
-        System.out.println("valor a ser sacado: " + valorSaque);
         return !(valorSaque % 10 != 0 || valorSaque > total);
 
     }
 
-    private void resetQtdeImpressa() {
+    private void resetQtdeImpressa() { //
         this.cem.setQtdeImpressa(0);
         this.cinquenta.setQtdeImpressa(0);
         this.vinte.setQtdeImpressa(0);
@@ -92,7 +86,7 @@ public class CaixaEletronico {
     private void verificarSaque(int valorSobra) { // verifica se existem cedulas disponiveis para o valor do saque e informa o usuario
         if (valorSobra != 0) {
             devolverCedulas();
-            JOptionPane.showMessageDialog(null, "Nao ha notas disponiveis suficiente para o saque");
+            JOptionPane.showMessageDialog(null, "Não existem notas disponível suficiente para o saque, tente outro valor");
         } else {
             JOptionPane.showMessageDialog(null, "Seu saque foi aprovado com " + cem.getQtdeImpressa() + " notas de cem, " + cinquenta.getQtdeImpressa() + " notas de cinquenta, " + vinte.getQtdeImpressa() + " notas de vinte, " + dez.getQtdeImpressa() + " notas de dez ");
         }
@@ -103,9 +97,5 @@ public class CaixaEletronico {
         this.cinquenta.setQtde(this.cinquenta.getQtdeImpressa() + this.cinquenta.getQtde());
         this.vinte.setQtde(this.vinte.getQtdeImpressa() + this.vinte.getQtde());
         this.dez.setQtde(this.dez.getQtdeImpressa() + this.dez.getQtde());
-        System.out.println("sobraram: " + this.cem.getQtde() + " notas de cem");
-        System.out.println("sobraram: " + this.cinquenta.getQtde() + " notas de cinquenta");
-        System.out.println("sobraram: " + this.vinte.getQtde() + " notas de vinte");
-        System.out.println("sobraram: " + this.dez.getQtde() + " notas de dez");
     }
 }
